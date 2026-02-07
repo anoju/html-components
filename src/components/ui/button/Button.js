@@ -34,18 +34,19 @@ export class Button extends HTMLElement {
       button.appendChild(this.firstChild);
     }
     
-    // 호스트에 걸린 클래스나 스타일이 있다면 복사합니다.
+    // 모든 속성을 호스트에서 새 엘리먼트로 복사합니다 (onclick, dataset, aria 등 포함)
+    Array.from(this.attributes).forEach(attr => {
+      if (attr.name !== 'class' && attr.name !== 'style') {
+        button.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    // 호스트에 걸린 클래스나 스타일이 있다면 병합합니다.
     if (this.className) {
-      button.className += ` ${this.className}`;
+      button.className = (button.className + ' ' + this.className).trim();
     }
     if (this.style.cssText) {
       button.style.cssText += this.style.cssText;
-    }
-    
-    // ID가 있다면 복사합니다.
-    if (this.id) {
-      button.id = this.id;
-      this.removeAttribute('id'); // DOM 내 ID 중복 방지
     }
     
     // Self-unwrap: <ui-button>을 새로 만든 <button>으로 교체합니다.

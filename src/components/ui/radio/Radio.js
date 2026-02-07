@@ -34,7 +34,30 @@ export class Radio extends HTMLElement {
         ${label ? `<span class="label-text">${label}</span>` : ''}
       </label>
     `;
-    // No need to attach logic. Native radio behavior works.
+    // 요소 레퍼런스
+    const wrapper = this.firstElementChild;
+    const input = wrapper.querySelector('input');
+    
+    // 스타일/클래스는 래퍼에
+    if (this.className) {
+       wrapper.className += ` ${this.className}`;
+    }
+    if (this.style.cssText) {
+       wrapper.style.cssText += this.style.cssText;
+    }
+
+    // 나머지 속성을 input에 전파
+    const handledAttrs = ['label', 'name', 'value', 'checked', 'disabled', 'class', 'style', 'type', 'aria-checked', 'role', 'tabindex', 'id'];
+    Array.from(this.attributes).forEach(attr => {
+      if (!handledAttrs.includes(attr.name)) {
+        input.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    if (this.id) {
+       input.id = this.id;
+       this.removeAttribute('id');
+    }
   }
 }
 

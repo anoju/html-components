@@ -40,7 +40,33 @@ export class Checkbox extends HTMLElement {
         ${label ? `<span class="label-text">${label}</span>` : ''}
       </label>
     `;
-    // No need to attach listener. It's a native input now.
+    // 요소 레퍼런스
+    const wrapper = this.firstElementChild;
+    const input = wrapper.querySelector('input');
+
+    // 모든 속성을 호스트에서 내부 input으로 복사 (id, onchange, dataset 등)
+    const handledAttrs = ['label', 'name', 'value', 'checked', 'disabled', 'class', 'style', 'type', 'aria-checked', 'role', 'tabindex'];
+    Array.from(this.attributes).forEach(attr => {
+      // label 등 이미 처리된 속성은 건너뜀
+      if (!handledAttrs.includes(attr.name)) {
+        input.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    if (this.id) {
+       input.id = this.id;
+       this.removeAttribute('id');
+    }
+    
+    // 스타일/클래스는 래퍼에
+    if (this.className) {
+       wrapper.className += ` ${this.className}`;
+    }
+    if (this.style.cssText) {
+       wrapper.style.cssText += this.style.cssText;
+    }
+
+    // No need to attach logic. It's a native input now.
   }
 }
 

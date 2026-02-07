@@ -45,11 +45,35 @@ export class Input extends HTMLElement {
         ${error ? `<div class="error-message">${error}</div>` : ''}
       </div>
     `;
+
+    // 요소 레퍼런스
+    const wrapper = this.firstElementChild;
+    const input = wrapper.querySelector('input');
     
-    // 이벤트 리스너는 이제 native input이 밖으로 드러나므로 
-    // 필요하다면 wrapper나 input에 직접 달거나, 
-    // main.js에서 위임(delegation) 처리할 수 있습니다.
-    // 여기서는 단순히 마크업 변환 역할만 수행합니다.
+    // 스타일/클래스는 래퍼에
+    if (this.className) {
+       wrapper.className += ` ${this.className}`;
+    }
+    if (this.style.cssText) {
+       wrapper.style.cssText += this.style.cssText;
+    }
+
+    // 나머지 속성(oninput, onchange, dataset 등)은 input 엘리먼트에 직접 전파
+    const handledAttrs = ['label', 'name', 'value', 'type', 'placeholder', 'disabled', 'required', 'error', 'class', 'style', 'id'];
+    Array.from(this.attributes).forEach(attr => {
+      if (!handledAttrs.includes(attr.name)) {
+        input.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    // ID 처리 (이미 위에서 생성했지만, 사용자가 명시한 ID가 있다면 덮어쓰거나 활용)
+    if (this.id) {
+       input.id = this.id;
+       this.removeAttribute('id');
+       // label for 업데이트
+       const labelEl = wrapper.querySelector('label');
+       if (labelEl) labelEl.setAttribute('for', input.id);
+    }
   }
 }
 

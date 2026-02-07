@@ -46,7 +46,21 @@ index.html              # 사용 예제
 3.  **SCSS & Atomic Design**: 컴포넌트별 SCSS 파일(`ui-*-wrapper`)을 분리하여 관리합니다.
 4.  **한글화 완료**: 모든 주석, 예제, 로그 메시지를 한글로 작성했습니다.
 
-## 🚀 실행 방법 (중요)
+## � 컴포넌트 작성 가이드 (개발자용)
+
+새로운 UI 컴포넌트를 만들 때 다음 규칙을 따르세요:
+
+1.  **Self-Unwrapping 패턴**:
+    - `connectedCallback`에서 `this.render()` 호출 후 `this.replaceWith(wrapper)`를 실행하여 커스텀 태그(`ui-*`)를 제거합니다.
+2.  **속성(Attribute) 처리**:
+    - **스타일/클래스** (`class`, `style`): 최상위 **Wrapper** 요소에 적용하여 레이아웃을 제어합니다.
+    - **기능 속성** (`value`, `disabled`, `type` 등): 내부의 **핵심 요소**(`input`, `button` 등)에 전파합니다.
+    - **이벤트** (`onclick`, `onchange` 등): 내부 핵심 요소에 전파하거나, Wrapper가 `label`이라면 자연스럽게 동작하도록 둡니다.
+3.  **구조(Markup)**:
+    - 폼 요소(`input`, `select`)는 반드시 `<label>` 또는 `<div>` 래퍼로 감싸서 `display: flex/grid`로 레이아웃을 잡습니다.
+    - 버튼(`button`)은 래퍼 없이 `<button>` 태그 자체로 교체해도 무방합니다.
+
+## �🚀 실행 방법 (중요)
 
 이 프로젝트는 VS Code의 **Live Server** 확장 프로그램을 사용하여 실행합니다.
 `index.html` 파일을 열고 Live Server로 실행("Go Live" 버튼 클릭)하여 확인하세요.
