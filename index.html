@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Component Library</title>
+    <link rel="stylesheet" href="./src/styles/index.css" />
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+  <div class="container">
+    <header style="margin-bottom: 3rem; text-align: center;">
+      <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.025em;">모던 컴포넌트</h1>
+      <p style="color: hsl(var(--foreground) / 0.6); max-width: 600px; margin: 0 auto;">
+        외부 의존성 없는 웹 컴포넌트 기반 UI 키트입니다. 순수 HTML, CSS, JS만 사용했습니다.
+      </p>
+    </header>
+
+    <main class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+      
+      <!-- 입력 필드 섹션 -->
+      <section class="section">
+        <h2>입력 필드 (Input)</h2>
+        <div class="grid">
+          <app-input label="사용자명" placeholder="이름을 입력하세요" name="username" required></app-input>
+          <app-input label="이메일 주소" type="email" placeholder="hong@example.com" name="email"></app-input>
+          <app-input label="대기 코드" placeholder="입력 불가" disabled value="X-9921"></app-input>
+          <app-input label="에러 상태" placeholder="잘못된 입력" error="필수 입력 항목입니다" value="잘못됨"></app-input>
+        </div>
+      </section>
+
+      <!-- 선택 컨트롤 섹션 -->
+      <section class="section">
+        <h2>선택 컨트롤 (Selection)</h2>
+        
+        <div style="margin-bottom: 2rem;">
+          <h3 style="font-size: 1rem; margin-bottom: 1rem;">체크박스 (Checkbox)</h3>
+          <div class="flex" style="flex-direction: column; gap: 0.75rem;">
+            <app-checkbox label="뉴스레터 구독하기" name="subscribe" checked></app-checkbox>
+            <app-checkbox label="이용약관 동의" name="terms"></app-checkbox>
+            <app-checkbox label="비활성화 된 옵션" disabled></app-checkbox>
+            <app-checkbox label="비활성화 및 체크됨" disabled checked></app-checkbox>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1rem; margin-bottom: 1rem;">라디오 그룹 (Radio Group)</h3>
+          <div class="flex" style="flex-direction: column; gap: 0.75rem;">
+            <app-radio label="무료 요금제" name="plan" value="free" checked></app-radio>
+            <app-radio label="프로 요금제 (월 1만원)" name="plan" value="pro"></app-radio>
+            <app-radio label="기업용 (문의 요망)" name="plan" value="enterprise" disabled></app-radio>
+          </div>
+        </div>
+      </section>
+
+      <!-- 인터랙티브 폼 예제 -->
+      <section class="section" style="grid-column: 1 / -1;">
+        <h2>인터랙티브 폼 예제</h2>
+        <p>이 폼은 커스텀 엘리먼트로부터 데이터를 수집합니다.</p>
+        
+        <form id="demo-form" class="grid" style="max-width: 500px;">
+          <app-input label="성명" name="fullname" required></app-input>
+          
+          <div style="margin-top: 0.5rem;">
+            <p style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">알림 설정</p>
+            <div class="flex gap-4">
+              <app-radio label="이메일" name="notification" value="email" checked></app-radio>
+              <app-radio label="문자(SMS)" name="notification" value="sms"></app-radio>
+              <app-radio label="앱 푸시" name="notification" value="push"></app-radio>
+            </div>
+          </div>
+
+          <div style="margin-top: 0.5rem;">
+            <app-checkbox label="개인정보 처리방침에 동의합니다" name="privacy" required></app-checkbox>
+          </div>
+
+          <button type="submit" style="
+            margin-top: 1rem;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+          ">
+            직원 지원서 제출
+          </button>
+        </form>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>
