@@ -1,6 +1,6 @@
-import './components/Input.js';
-import './components/Checkbox.js';
-import './components/Radio.js';
+import './components/ui/input/Input.js';
+import './components/ui/checkbox/Checkbox.js';
+import './components/ui/radio/Radio.js';
 
 console.log('앱 초기화 및 컴포넌트 등록 완료.');
 
@@ -23,7 +23,7 @@ if (form) {
       if (!name) return;
       
       if (el.tagName === 'APP-INPUT') {
-        data[name] = el.shadowRoot.querySelector('input').value; // 또는 .value getter 구현 사용
+        data[name] = el.querySelector('input').value; // Shadow DOM 제거됨
       } else if (el.tagName === 'APP-CHECKBOX') {
         if (el.hasAttribute('checked')) {
              data[name] = el.getAttribute('value') || 'on';

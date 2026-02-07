@@ -7,18 +7,21 @@ React나 Vue처럼 **Shadow DOM(캡슐화)과 속성(Props) 반응성**을 갖�
 ## 📁 프로젝트 구조
 
 ```
-d:\git-workspace\html-components\
-├── index.html            # 사용 예제 페이지 (Entry Point)
-├── src/
-│   ├── components/       # UI 컴포넌트 폴더
-│   │   ├── Input.js      # <app-input> 구현
-│   │   ├── Checkbox.js   # <app-checkbox> 구현
-│   │   └── Radio.js      # <app-radio> 구현
-│   ├── styles/           # 전역 스타일 및 변수
-│   │   ├── index.css     # 공통 스타일
-│   │   └── variables.css # 색상 테마 (HSL 기반) (Tailwind/Shadcn 스타일)
-│   └── main.js           # 메인 스크립트
-└── README.md             # 영문 가이드 (보관용)
+src/
+  ├── components/       # UI 컴포넌트
+  │   └── ui/
+  │       ├── input/
+  │       ├── checkbox/
+  │       └── radio/
+  ├── scss/             # SCSS 스타일 (소스)
+  │   ├── abstracts/    # 변수, 믹스인
+  │   ├── base/         # 리셋
+  │   ├── components/   # 컴포넌트 SCSS (_input.scss 등)
+  │   └── main.scss     # 메인 진입점
+  ├── css/              # 컴파일된 CSS (결과물)
+  │   └── main.min.css
+  └── main.js           # 메인 진입점
+index.html              # 사용 예제
 ```
 
 ## ✨ 주요 특징
@@ -26,8 +29,9 @@ d:\git-workspace\html-components\
 1.  **React/Vue 유사 문법**: HTML 태그에 속성(Attribute)을 넘겨주면 내부에서 반응합니다.
     - `<app-input label="이름" placeholder="홍길동"></app-input>`
     - `<app-checkbox label="동의합니다" checked></app-checkbox>`
-2.  **Shadow DOM**: 각 컴포넌트 내부 스타일(`src/components/*.js` 내 `<style>`)은 외부에 영향을 주지 않고 독립적입니다.
-3.  **Modern Design**: 최신 트렌드의 깔끔한 디자인(테두리, 호버 효과, 애니메이션)을 적용했습니다.
+2.  **Light DOM**: Shadow DOM 대신 Light DOM을 사용하여 전역 스타일(SCSS)이 자연스럽게 적용되도록 변경했습니다.
+    - 스타일 커스터마이징이 훨씬 쉬워졌습니다.
+3.  **SCSS & Atomic Design**: 컴포넌트별 SCSS 파일을 분리하여 관리합니다.
 4.  **한글화 완료**: 모든 주석, 예제, 로그 메시지를 한글로 작성했습니다.
 
 ## 🚀 실행 방법 (중요)

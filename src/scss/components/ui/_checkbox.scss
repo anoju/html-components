@@ -1,0 +1,66 @@
+app-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  cursor: pointer;
+  user-select: none;
+
+  &[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .checkbox-root {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid hsl(214 32% 80%);
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  &[checked] .checkbox-root {
+    background-color: hsl(250 84% 54%);
+    border-color: hsl(250 84% 54%);
+  }
+
+  /* Check icon */
+  .check-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: white;
+    display: none;
+  }
+
+  &[checked] .check-icon {
+    display: block;
+  }
+
+  .label-text {
+    font-size: 0.875rem;
+    color: hsl(222 47% 11%);
+  }
+
+  /* Keyboard focus styles */
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible .checkbox-root {
+      box-shadow: 0 0 0 2px hsl(250 84% 54% / 0.4);
+  }
+
+  /* Hidden input */
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+}

@@ -1,0 +1,9 @@
+@import './abstracts/variables';
+@import './base/reset';
+@import './base/layout';
+
+// 아토믹 UI 컴포넌트 (Atomic UI Components)
+// 각 컴포넌트별 스타일 파일을 여기서 통합(Import)합니다.
+@import './components/ui/input';
+@import './components/ui/checkbox';
+@import './components/ui/radio';
