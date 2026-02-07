@@ -1,37 +1,22 @@
 export class Input extends HTMLElement {
-  static get observedAttributes() {
-    return ['label', 'placeholder', 'type', 'value', 'name', 'disabled', 'required', 'error'];
-  }
-
   constructor() {
     super();
   }
 
   connectedCallback() {
+    // 렌더링 수행
     this.render();
-    this.setupEventListeners();
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }
-
-  setupEventListeners() {
-    // Light DOM input 찾기
-    const input = this.querySelector('input');
-    if (input) {
-      input.addEventListener('input', (e) => {
-        this.dispatchEvent(new CustomEvent('input', { detail: e.target.value, bubbles: true, composed: true }));
-      });
-      input.addEventListener('change', (e) => {
-        this.dispatchEvent(new CustomEvent('change', { detail: e.target.value, bubbles: true, composed: true }));
-      });
+    
+    // 렌더링 후, 컴포넌트 자신(this)을 생성된 첫 번째 자식(Wrapper)으로 교체
+    // 이로써 <ui-input> 태그는 DOM에서 사라지고 내막의 HTML만 남습니다.
+    const wrapper = this.firstElementChild;
+    if (wrapper) {
+      this.replaceWith(wrapper);
     }
   }
 
   render() {
+    // 속성 가져오기
     const label = this.getAttribute('label') || '';
     const placeholder = this.getAttribute('placeholder') || '';
     const type = this.getAttribute('type') || 'text';
@@ -40,15 +25,15 @@ export class Input extends HTMLElement {
     const disabled = this.hasAttribute('disabled');
     const required = this.hasAttribute('required');
     const error = this.getAttribute('error');
-
-    // Host element style to "disappear" from layout
-    this.style.display = 'contents';
+    
+    // 고유 ID 생성 (name 기반, 또는 임의)
+    const id = name ? `input-${name}` : `input-${Math.random().toString(36).substr(2, 9)}`;
 
     this.innerHTML = `
       <div class="ui-input-wrapper ${error ? 'error' : ''}">
-        ${label ? `<label for="input-${name}">${label}${required ? ' *' : ''}</label>` : ''}
+        ${label ? `<label for="${id}">${label}${required ? ' *' : ''}</label>` : ''}
         <input 
-          id="input-${name}"
+          id="${id}"
           class="ui-input"
           type="${type}" 
           placeholder="${placeholder}" 
@@ -61,7 +46,10 @@ export class Input extends HTMLElement {
       </div>
     `;
     
-    this.setupEventListeners(); 
+    // 이벤트 리스너는 이제 native input이 밖으로 드러나므로 
+    // 필요하다면 wrapper나 input에 직접 달거나, 
+    // main.js에서 위임(delegation) 처리할 수 있습니다.
+    // 여기서는 단순히 마크업 변환 역할만 수행합니다.
   }
 }
 

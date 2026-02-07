@@ -1,34 +1,20 @@
 export class Checkbox extends HTMLElement {
-  static get observedAttributes() {
-    return ['label', 'checked', 'name', 'value', 'disabled', 'required'];
-  }
-
   constructor() {
     super();
   }
 
   connectedCallback() {
     this.render();
-  }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      this.render();
+    // Unwrap
+    const wrapper = this.firstElementChild;
+    if (wrapper) {
+      this.replaceWith(wrapper);
     }
   }
 
-  get checked() {
-    return this.hasAttribute('checked');
-  }
-
-  set checked(val) {
-    if (val) {
-      this.setAttribute('checked', '');
-    } else {
-      this.removeAttribute('checked');
-    }
-  }
-
+  // Setters/Getters won't work after unwrapping, but we keep initial logic in render()
+  
   render() {
     const label = this.getAttribute('label') || '';
     const checked = this.hasAttribute('checked');
@@ -36,10 +22,6 @@ export class Checkbox extends HTMLElement {
     const name = this.getAttribute('name') || '';
     const value = this.getAttribute('value') || 'on';
 
-    // Host "disappears"
-    this.style.display = 'contents';
-
-    // "input을 그대로 쓰길 원합니다" -> Use native input visibly (or styled via appearance)
     this.innerHTML = `
       <label class="ui-checkbox-wrapper ${disabled ? 'disabled' : ''}">
         <input 
@@ -58,18 +40,7 @@ export class Checkbox extends HTMLElement {
         ${label ? `<span class="label-text">${label}</span>` : ''}
       </label>
     `;
-
-    const input = this.querySelector('input');
-    if (input) {
-      input.addEventListener('change', (e) => {
-        this.checked = e.target.checked;
-        this.dispatchEvent(new CustomEvent('change', { 
-            detail: { checked: e.target.checked, value },
-            bubbles: true, 
-            composed: true 
-        }));
-      });
-    }
+    // No need to attach listener. It's a native input now.
   }
 }
 
