@@ -16,21 +16,24 @@ if (form) {
     
     // 이번 데모에서는 React 스타일의 상태 관리나 수동 데이터 수집 방식을 보여줍니다.
     const data = {};
-    const inputs = form.querySelectorAll('app-input, app-checkbox, app-radio');
+    const inputs = form.querySelectorAll('ui-input, ui-checkbox, ui-radio');
     
     inputs.forEach(el => {
       const name = el.getAttribute('name');
       if (!name) return;
       
-      if (el.tagName === 'APP-INPUT') {
-        data[name] = el.querySelector('input').value; // Shadow DOM 제거됨
-      } else if (el.tagName === 'APP-CHECKBOX') {
-        if (el.hasAttribute('checked')) {
-             data[name] = el.getAttribute('value') || 'on';
+      if (el.tagName === 'UI-INPUT') {
+        const input = el.querySelector('input');
+        if (input) data[name] = input.value;
+      } else if (el.tagName === 'UI-CHECKBOX') {
+        const input = el.querySelector('input');
+        if (input && input.checked) {
+             data[name] = input.getAttribute('value') || 'on';
         }
-      } else if (el.tagName === 'APP-RADIO') {
-        if (el.hasAttribute('checked')) {
-          data[name] = el.getAttribute('value');
+      } else if (el.tagName === 'UI-RADIO') {
+        const input = el.querySelector('input');
+        if (input && input.checked) {
+          data[name] = input.getAttribute('value');
         }
       }
     });

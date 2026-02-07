@@ -1,66 +1,80 @@
-app-checkbox {
+/* UI Checkbox Component */
+
+.ui-checkbox-wrapper {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-sans, system-ui, sans-serif);
   cursor: pointer;
   user-select: none;
+  position: relative;
 
-  &[disabled] {
+  &.disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
 
-  .checkbox-root {
+  /* Hide the default checkbox visually but make it accessible OR style it */
+  .ui-checkbox {
+    /* 
+      Option 1: Complete Hiding (classic)
+      - But user said "use input as is". 
+      - Let's use appearance: none so it IS the box.
+    */
+    appearance: none;
     width: 1.25rem;
     height: 1.25rem;
     border: 1px solid hsl(214 32% 80%);
     border-radius: 0.25rem;
+    background-color: white;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    transition: all 0.2s;
-    position: relative;
+    margin: 0; /* Reset */
+    cursor: pointer;
+
+    &:checked {
+      background-color: hsl(250 84% 54%);
+      border-color: hsl(250 84% 54%);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px hsl(250 84% 54% / 0.4);
+    }
   }
 
-  &[checked] .checkbox-root {
-    background-color: hsl(250 84% 54%);
-    border-color: hsl(250 84% 54%);
+  /* Custom Icon overlay */
+  .ui-checkbox-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Let clicks pass to input */
+    
+    svg {
+      width: 0.875rem;
+      height: 0.875rem;
+      color: white;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.1s;
+    }
   }
 
-  /* Check icon */
-  .check-icon {
-    width: 0.875rem;
-    height: 0.875rem;
-    color: white;
-    display: none;
-  }
-
-  &[checked] .check-icon {
-    display: block;
+  /* When input is checked, show the icon inside the sibling span */
+  .ui-checkbox:checked + .ui-checkbox-icon svg {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .label-text {
     font-size: 0.875rem;
     color: hsl(222 47% 11%);
-  }
-
-  /* Keyboard focus styles */
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible .checkbox-root {
-      box-shadow: 0 0 0 2px hsl(250 84% 54% / 0.4);
-  }
-
-  /* Hidden input */
-  input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    width: 0;
-    height: 0;
   }
 }

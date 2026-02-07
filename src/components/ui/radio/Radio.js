@@ -5,7 +5,6 @@ export class Radio extends HTMLElement {
 
   constructor() {
     super();
-    // Shadow DOM 제거
   }
 
   connectedCallback() {
@@ -32,30 +31,18 @@ export class Radio extends HTMLElement {
       this.removeAttribute('checked');
     }
   }
-  
+
   uncheckOthers() {
     const name = this.getAttribute('name');
     if (!name) return;
     
     // 문서 내 동일한 name을 가진 다른 라디오 버튼 찾기
-    const others = Array.from(document.querySelectorAll(`app-radio[name="${name}"]`));
+    const others = Array.from(document.querySelectorAll(`ui-radio[name="${name}"]`));
     others.forEach(other => {
       if (other !== this && other.checked) {
         other.checked = false; 
       }
     });
-  }
-
-  select() {
-    if (this.hasAttribute('disabled')) return;
-    if (this.checked) return; // 이미 체크됨
-    
-    this.checked = true;
-    this.dispatchEvent(new CustomEvent('change', { 
-        detail: { checked: true, value: this.getAttribute('value') },
-        bubbles: true, 
-        composed: true 
-    }));
   }
 
   render() {
@@ -65,29 +52,37 @@ export class Radio extends HTMLElement {
     const name = this.getAttribute('name') || '';
     const value = this.getAttribute('value') || 'on';
 
+    this.style.display = 'contents';
+
     this.innerHTML = `
-      <div class="radio-root">
-        <div class="radio-indicator"></div>
-      </div>
-      ${label ? `<span class="label-text">${label}</span>` : ''}
-      <input type="radio" name="${name}" value="${value}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} tabindex="-1" style="display:none">
+      <label class="ui-radio-wrapper ${disabled ? 'disabled' : ''}">
+        <input 
+          class="ui-radio" 
+          type="radio" 
+          name="${name}" 
+          value="${value}" 
+          ${checked ? 'checked' : ''} 
+          ${disabled ? 'disabled' : ''}
+        >
+        <span class="ui-radio-circle"></span>
+        ${label ? `<span class="label-text">${label}</span>` : ''}
+      </label>
     `;
 
-    this.setAttribute('role', 'radio');
-    this.setAttribute('aria-checked', checked);
-    if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', disabled ? '-1' : '0');
-
-    this.onclick = (e) => {
-        this.select();
-    };
-    
-    this.onkeydown = (e) => {
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        this.select();
-      }
-    };
+    const input = this.querySelector('input');
+    if (input) {
+      input.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            this.checked = true;
+            this.dispatchEvent(new CustomEvent('change', { 
+                detail: { checked: true, value },
+                bubbles: true, 
+                composed: true 
+            }));
+        }
+      });
+    }
   }
 }
 
-customElements.define('app-radio', Radio);
+customElements.define('ui-radio', Radio);

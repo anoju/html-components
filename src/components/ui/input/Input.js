@@ -5,7 +5,6 @@ export class Input extends HTMLElement {
 
   constructor() {
     super();
-    // Shadow DOM 제거: Light DOM 사용
   }
 
   connectedCallback() {
@@ -20,6 +19,7 @@ export class Input extends HTMLElement {
   }
 
   setupEventListeners() {
+    // Light DOM input 찾기
     const input = this.querySelector('input');
     if (input) {
       input.addEventListener('input', (e) => {
@@ -41,12 +41,15 @@ export class Input extends HTMLElement {
     const required = this.hasAttribute('required');
     const error = this.getAttribute('error');
 
-    // Light DOM에 렌더링 (CSS Link 제거)
+    // Host element style to "disappear" from layout
+    this.style.display = 'contents';
+
     this.innerHTML = `
-      <div class="${error ? 'error' : ''}">
-        ${label ? `<label for="input">${label}${required ? ' *' : ''}</label>` : ''}
+      <div class="ui-input-wrapper ${error ? 'error' : ''}">
+        ${label ? `<label for="input-${name}">${label}${required ? ' *' : ''}</label>` : ''}
         <input 
-          id="input"
+          id="input-${name}"
+          class="ui-input"
           type="${type}" 
           placeholder="${placeholder}" 
           value="${value}" 
@@ -58,9 +61,8 @@ export class Input extends HTMLElement {
       </div>
     `;
     
-    // 리스너 재등록
     this.setupEventListeners(); 
   }
 }
 
-customElements.define('app-input', Input);
+customElements.define('ui-input', Input);
